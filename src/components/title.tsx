@@ -1,10 +1,28 @@
 "use client";
 
-import { ProgressContext } from "@/app/provider";
 import { TitleType } from "@/lib/types";
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import Checkmark from "../../public/assets/checkmark";
+import { ProgressContext } from "@/services/providers/completed-titles-provider";
+import {
+  getPositionFontSize,
+  getTitleFontSize,
+} from "@/utils/calculate-font-size";
+import { convertTime } from "@/utils/format-time";
+import { getYear } from "@/utils/get-year";
+import { useScreenSize } from "@/hooks/useScreenSize";
+
+const initialWidth = 320;
+const initialHeight = 80;
+
+const positionWidth = 44;
+const titleWidth = 80;
+const checkWidth = 56;
+const squareWidth = 30;
+
+const leftBlindZoneWidth = positionWidth + titleWidth;
+const rightBlindZoneWidth = checkWidth;
 
 export default function Title({
   data,
@@ -17,38 +35,22 @@ export default function Title({
   const { completed, checkTitle } = useContext(ProgressContext);
   const isCompleted = completed.includes(data.id);
 
-  const initialWidth = 320;
-  const initialHeight = 80;
-
-  const [size, setSize] = useState<number>(0);
-
+  const windowSize = useScreenSize();
+  const size = windowSize > 800 ? 800 : windowSize;
   const scale = (0.9 * size) / initialWidth;
-
-  useEffect(() => {
-    function changeSize() {
-      const width = window.innerWidth;
-      const newSize = width > 700 ? 700 : width;
-      setSize(newSize);
-    }
-
-    changeSize();
-
-    window.addEventListener("resize", changeSize);
-
-    return () => window.removeEventListener("resize", changeSize);
-  }, []);
 
   return (
     <div
-      className="transition-all relative"
+      className="relative"
       style={{
         width: `${0.9 * size}px`,
         height: `${(0.9 * size) / 4}px`,
         transform: `scale(${isCompleted ? 0.99 : 1})`,
-        transitionDuration: "0.8s",
         filter: `brightness(${isCompleted ? 0.5 : 1})`,
+        transition: "transform 0.8s ease, filter 0.8s ease",
       }}
     >
+      {/* SCALING CONTAINER */}
       <div
         className="overflow-hidden origin-top-left absolute shadow-2xl flex items-center font-bold"
         style={{
@@ -58,6 +60,7 @@ export default function Title({
           color: data.text,
         }}
       >
+        {/* BANNER */}
         <Image
           className={`${
             isCompleted ? "brightness-75" : "brightness-100"
@@ -67,13 +70,16 @@ export default function Title({
           width={initialWidth * scale * 2}
           height={initialHeight * scale * 2}
           quality={100}
-          priority
+          // priority
+          loading="lazy"
           style={{
             transitionDuration: "1s",
           }}
         ></Image>
+
+        {/* BLACK MASK */}
         <div
-          className="blur-lg mix-blend-color transition-all pointer-events-none top-1/2 left-0 absolute rounded-full bg-black w-full h-full"
+          className="mix-blend-color transition-all pointer-events-none top-1/2 left-0 absolute rounded-full bg-black w-full h-full"
           style={{
             width: initialWidth,
             height: initialWidth,
@@ -83,80 +89,102 @@ export default function Title({
             transitionDuration: "0.8s",
           }}
         ></div>
+        {/* LEFT TEXT FADE */}
         <div
-          className="w-[56px] flex justify-center items-center select-none"
+          className="absolute z-[-1]"
           style={{
-            fontSize: getPositionSize(position) + "px",
-            lineHeight: getPositionSize(position) + "px",
+            width: `${leftBlindZoneWidth}px`,
+            height: `${initialHeight}px`,
+            background: `linear-gradient(to right, hsl(0, 0%, ${
+              data.text === "white" ? 0 : 100
+            }%, 0.7),hsl(0, 0%, ${
+              data.text === "white" ? 0 : 100
+            }%, 0.15) 90%, transparent)`,
+          }}
+        ></div>
+
+        {/* RIGHT TEXT FADE */}
+        <div
+          className="right-0 absolute z-[-1]"
+          style={{
+            width: `${rightBlindZoneWidth}px`,
+            height: `${initialHeight}px`,
+            background: `linear-gradient(to left, hsl(0, 0%, ${
+              data.text === "white" ? 0 : 100
+            }%, 0.7),hsl(0, 0%, ${
+              data.text === "white" ? 0 : 100
+            }%, 0.1) 80%, transparent)`,
+          }}
+        ></div>
+
+        {/* POSITION NUMBER */}
+        <div
+          className="flex justify-center items-center select-none  "
+          style={{
+            width: `${positionWidth}px`,
+            fontSize: getPositionFontSize(position) + "px",
+            lineHeight: getPositionFontSize(position) + "px",
           }}
         >
           {position + 1}
         </div>
-        <div className="flex flex-col justify-center font-bold">
+
+        {/* TITLE + DATE + DURATION*/}
+        <div
+          className="flex flex-col justify-center font-bold"
+          style={{ width: `${titleWidth}px` }}
+        >
           <div
-            className="max-w-[90px] text-balance"
+            className=" text-balance  pr-1"
             style={{
-              fontSize: getTitleSize(data.title) + "px",
-              lineHeight: getTitleSize(data.title) + 4 + "px",
+              fontSize: getTitleFontSize(data.title) + "px",
+              lineHeight: getTitleFontSize(data.title) + 4 + "px",
             }}
           >
             {data.title}
           </div>
           <div
-            className="text-[10px] text-zinc-300"
+            className="text-[9px] text-zinc-300"
             style={{ color: data.text, opacity: "0.8" }}
           >
             {`${getYear(data.release_date)} • ${convertTime(data.duration)}`}
           </div>
         </div>
+
+        {/* CHECKMARK CONTAINER */}
         <div
-          className="w-[32px] h-[32px] border-[3px] border-white 
-      border-w ml-auto mx-[20px] cursor-pointer relative"
-          style={{ borderColor: data.text }}
-          onClick={() => checkTitle(data.id)}
+          className="flex justify-center ml-auto"
+          style={{ width: `${checkWidth}px` }}
         >
-          <div
-            className={`${
-              isCompleted ? "w-full" : "w-0"
-            } h-full transition-all overflow-hidden`}
-            style={{ transitionDuration: "0.5s" }}
+          <button
+            className="outline outline-offset-[-3px] outline-[3px] border-white 
+      border-w cursor-pointer relative"
+            style={{
+              width: `${squareWidth}px`,
+              height: `${squareWidth}px`,
+              borderColor: data.text,
+            }}
+            onClick={() => checkTitle(data.id)}
           >
-            <div className={`w-[27px] h-[27px] transition-all`}>
-              <Checkmark styles="" fill={data.text} />
+            <div
+              className={`${
+                isCompleted ? "w-full" : "w-0"
+              } h-full transition-all overflow-hidden`}
+              style={{ transitionDuration: "0.5s" }}
+            >
+              <div
+                className={`w-full h-full transition-all`}
+                style={{
+                  width: `${squareWidth}px`,
+                  height: `${squareWidth}px`,
+                }}
+              >
+                <Checkmark fill={data.text} />
+              </div>
             </div>
-          </div>
+          </button>
         </div>
       </div>
     </div>
   );
-}
-
-function getTitleSize(title: string) {
-  const length = title.length;
-  if (length > 36) return 8;
-  if (length > 18) return 10;
-  if (length > 14) return 12;
-  if (length > 10) return 14;
-
-  return 16;
-}
-
-function getPositionSize(position: number) {
-  const i = position + 1;
-  if (i >= 100) return 12;
-  if (i >= 10) return 22;
-  return 30;
-}
-
-function getYear(dateString: string): number {
-  const date = new Date(dateString);
-  return date.getFullYear();
-}
-
-function convertTime(totalMinutes: number): string {
-  const hours = Math.floor(totalMinutes / 60);
-  const minutes = totalMinutes % 60;
-  return `${hours !== 0 ? hours + "h " : ""}${
-    minutes !== 0 ? minutes + "m" : ""
-  }`;
 }

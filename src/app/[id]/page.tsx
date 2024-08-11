@@ -1,7 +1,7 @@
-import Title from "@/components/title";
 import { fetchTitles, fetchUniverse } from "@/lib/data";
-import { TitleType } from "@/lib/types";
-import ProgressProvider from "../provider";
+import ProgressProvider from "../../services/providers/completed-titles-provider";
+import { sortTitlesByRelease } from "@/utils/sort-titles-release-order";
+import Title from "@/components/Title";
 
 export default async function Universe({ params }: { params: { id: string } }) {
   const universe = await fetchUniverse(params.id);
@@ -10,9 +10,12 @@ export default async function Universe({ params }: { params: { id: string } }) {
   return (
     <ProgressProvider>
       <div className="text-white flex flex-col items-center h-full overflow-auto">
-        <div className="w-full p-8 text-center text-4xl font-bold">
-          {universe.title}
+        <div className="max-w-[800px] w-full my-8">
+          <div className=" w-[90%] mx-auto font-black text-[3rem] sm:text-[5rem]">
+            {universe.title}
+          </div>
         </div>
+
         <div
           className="flex flex-col"
           style={{ marginBottom: "50svh", gap: "clamp(0.5rem,5vw,2rem)" }}
@@ -24,21 +27,4 @@ export default async function Universe({ params }: { params: { id: string } }) {
       </div>
     </ProgressProvider>
   );
-}
-
-function sortTitlesByRelease(titles: TitleType[]): TitleType[] {
-  const sortedTitles: TitleType[] = [];
-
-  while (titles.length > 0) {
-    let oldestTitle = titles[0];
-    titles.forEach((title) => {
-      if (title.release_date < oldestTitle.release_date) {
-        oldestTitle = title;
-      }
-    });
-    titles = titles.filter((title) => title.id !== oldestTitle.id);
-    sortedTitles.push(oldestTitle);
-  }
-
-  return sortedTitles;
 }
