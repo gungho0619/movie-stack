@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useScroll } from "@/hooks/useScroll";
-import Logo from "./logo";
+import Logo from "./Logo";
 
 export default function NavBar({ children }: { children: React.ReactNode }) {
   const { scroll, scrollTop } = useScroll();
