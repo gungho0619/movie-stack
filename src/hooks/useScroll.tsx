@@ -1,3 +1,4 @@
+import { dir } from "console";
 import { useEffect, useState } from "react";
 
 export function useScroll() {
@@ -33,6 +34,23 @@ export function useScroll() {
       window.removeEventListener("wheel", checkNav);
     };
   }, [scroll]);
+
+  useEffect(() => {
+    let prevY: number;
+    function trackScroll(e: TouchEvent) {
+      const touch = e.touches[0];
+      const currentY = touch.clientY;
+      const direction = Math.sign(prevY - currentY);
+      if (direction !== 0) setScroll(direction);
+      prevY = currentY;
+    }
+
+    window.addEventListener("touchmove", trackScroll);
+
+    return () => {
+      window.removeEventListener("touchmove", trackScroll);
+    };
+  }, []);
 
   return { scroll, scrollTop };
 }

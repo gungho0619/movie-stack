@@ -11,7 +11,7 @@ export default async function Universe({ params }: { params: { id: string } }) {
     <ProgressProvider>
       <div className="text-white flex flex-col items-center h-full overflow-auto">
         <div className="max-w-[800px] w-full my-8">
-          <div className=" w-[90%] mx-auto font-black text-[3rem] sm:text-[5rem]">
+          <div className=" w-[90%] mx-auto font-black text-[3rem] sm:text-[5rem] text-center">
             {universe.title}
           </div>
         </div>
