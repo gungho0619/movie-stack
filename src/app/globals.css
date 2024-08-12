@@ -10,7 +10,6 @@
   /* @apply bg-custom-primary; */
   background-color: #1a1a36;
   padding: 5px;
-  margin-block: 2px;
 }
 
 ::-webkit-scrollbar-thumb {
