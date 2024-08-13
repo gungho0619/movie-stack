@@ -17,6 +17,7 @@ export async function fetchUniverse(id: string): Promise<UniverseType> {
   try {
     const data = await sql<UniverseType>`SELECT * FROM universes
      WHERE id = ${id}`;
+    revalidatePath("/");
     return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);

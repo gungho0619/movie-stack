@@ -36,14 +36,14 @@ export function useCardTilt() {
       let yRotate = yRatio - 0.5;
 
       if (card && active) {
-        card.style.transform = cardMove(5 * yRotate, 3 * xRotate, 1.01);
+        card.style.transform = cardMove(6 * yRotate, 3 * xRotate, 1.01);
       }
     }
 
     function enterCard() {
       if (card && active) {
         setTimeout(() => {
-          card.style.transition = "";
+          card.style.transition = "box-shadow 1s ease";
         }, 300);
         card.style.transition = "1s cubic-bezier(0.03, 0.98, 0.52, 0.99)";
       }

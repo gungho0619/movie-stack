@@ -2,18 +2,26 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --background: #15153e;
+  --primary: #09091b;
+  --text: #8787fb;
+}
+
+body {
+  background-color: var(--background);
+}
+
 ::-webkit-scrollbar {
   width: 1.2rem;
 }
 
 ::-webkit-scrollbar-track {
-  /* @apply bg-custom-primary; */
-  background-color: #1a1a36;
+  background-color: #0d0d1f;
   padding: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background-color: #30305f;
-  border: #1a1a36 2px solid;
-  /* border: black 2px solid; */
+  background-color: #303068;
+  border: var(--primary) 2px solid;
 }

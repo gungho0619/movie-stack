@@ -19,7 +19,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} bg-custom-primary min-h-svh`}>
+      <body className={`${roboto.className} min-h-svh`}>
         <NavBar>
           <main className="max-w-[1000px] mx-auto">{children}</main>
         </NavBar>

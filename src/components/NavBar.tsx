@@ -13,7 +13,7 @@ export default function NavBar({ children }: { children: React.ReactNode }) {
     <div className="w-full h-full">
       <div className="h-20">
         <div
-          className="transition-all z-[1] fixed w-full h-20 bg-custom-primary2 
+          className="transition-all z-[1] fixed w-full h-20 bg-custom-primary3 
         mix-blend-multiply opacity-80 "
           style={{
             transform: `translateY(${showNav ? 0 : -100}%)`,

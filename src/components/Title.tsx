@@ -4,15 +4,15 @@ import { TitleType } from "@/lib/types";
 import Image from "next/image";
 import { useContext, useEffect, useRef, useState } from "react";
 import Checkmark from "../../public/assets/checkmark";
-import { ProgressContext } from "@/services/providers/completed-titles-provider";
 import {
   getPositionFontSize,
   getTitleFontSize,
-} from "@/utils/calculate-font-size";
-import { convertTime } from "@/utils/format-time";
-import { getYear } from "@/utils/get-year";
+} from "@/utils/calculateFontSize";
+import { getYear } from "@/utils/getYear";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useCardTilt } from "@/hooks/useCardTilt";
+import { formatTime } from "@/utils/convertTime";
+import { ProgressContext } from "@/services/providers/ProgressProvider";
 
 const initialWidth = 320;
 const initialHeight = 80;
@@ -64,7 +64,11 @@ export default function Title({
       }}
     >
       {/* TILTING CONTAINER */}
-      <div className="w-full h-full" ref={cardRef}>
+      <div
+        ref={cardRef}
+        className="w-full h-full"
+        style={{ boxShadow: `0 0 ${isCompleted ? 5 : 20}px black` }}
+      >
         {/* SCALED CARD */}
         <div
           className="left-1/2 top-1/2 overflow-hidden absolute shadow-2xl flex items-center font-bold"
@@ -79,7 +83,7 @@ export default function Title({
           <Image
             className={`${
               isCompleted ? "brightness-75" : "brightness-100"
-            } transition-all absolute top-0 left-0 w-full h-full z-[-1] select-none saturate-[1.1]`}
+            } transition-all absolute top-0 left-0 w-full h-full z-[-1] select-none saturate-[1.3]`}
             src={data.banner_url}
             alt=""
             width={initialWidth * scale * 2}
@@ -161,7 +165,7 @@ export default function Title({
               className="text-[9px] text-zinc-300"
               style={{ color: data.text, opacity: "0.8" }}
             >
-              {`${getYear(data.release_date)} • ${convertTime(data.duration)}`}
+              {`${getYear(data.release_date)} • ${formatTime(data.duration)}`}
             </div>
           </div>
 
