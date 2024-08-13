@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const cardMove = (x: number, y: number, scale: number) =>
   `perspective(500px) scale(${scale}) rotateX(${x}deg) rotateY(${y}deg)`;
@@ -6,6 +6,14 @@ const cardMove = (x: number, y: number, scale: number) =>
 export function useCardTilt() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (cardRef.current) {
+      cardRef.current.style.transition = "1s";
+      cardRef.current.style.transform = "";
+    }
+  }, [active]);
 
   useEffect(() => {
     const cardContainer = containerRef.current;
@@ -27,13 +35,13 @@ export function useCardTilt() {
       let xRotate = -1 * (xRatio - 0.5);
       let yRotate = yRatio - 0.5;
 
-      if (card) {
+      if (card && active) {
         card.style.transform = cardMove(5 * yRotate, 3 * xRotate, 1.01);
       }
     }
 
     function enterCard() {
-      if (card) {
+      if (card && active) {
         setTimeout(() => {
           card.style.transition = "";
         }, 300);
@@ -42,7 +50,7 @@ export function useCardTilt() {
     }
 
     function dropTilt() {
-      if (card) {
+      if (card && active) {
         card.style.transition = "1s cubic-bezier(0.03, 0.98, 0.52, 0.99)";
         card.style.transform = cardMove(0, 0, 1);
       }
@@ -57,7 +65,7 @@ export function useCardTilt() {
       cardContainer.removeEventListener("mousemove", tiltCard);
       cardContainer.removeEventListener("mouseout", dropTilt);
     };
-  }, [containerRef]);
+  }, [containerRef, active]);
 
-  return { containerRef, cardRef };
+  return { containerRef, cardRef, setActive };
 }

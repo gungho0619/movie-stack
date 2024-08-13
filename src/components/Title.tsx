@@ -40,11 +40,15 @@ export default function Title({
   const size = windowSize > 800 ? 800 : windowSize;
   const scale = (0.9 * size) / initialWidth;
 
-  const { containerRef, cardRef } = useCardTilt();
+  const { containerRef, cardRef, setActive } = useCardTilt();
 
   useEffect(() => {
     setIsCompleted(completed.includes(data.id));
   }, [completed, data.id]);
+
+  useEffect(() => {
+    setActive(!isCompleted);
+  }, [isCompleted, setActive]);
 
   return (
     // CONTAINER
