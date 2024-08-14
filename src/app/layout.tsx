@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
+import backPattern from "../../public/circle-blues.webp";
+
 const roboto = Roboto({
   subsets: ["latin"],
   weight: ["100", "300", "400", "500", "700", "900"],
@@ -19,10 +21,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${roboto.className} min-h-svh`}>
+      <body className={`${roboto.className} min-h-svh overflow-x-hidden`}>
+        <div
+          className="opacity-30 brightness-200 fixed w-screen h-screen z-[-1] saturate-[0.3]"
+          style={{
+            backgroundImage: `url(https://www.toptal.com/designers/subtlepatterns/uploads/circle-blues.png)`,
+          }}
+        ></div>
         <NavBar>
           <main className="max-w-[1000px] mx-auto">{children}</main>
         </NavBar>
+        {/* <div
+          className="w-screen h-[10svh] fixed bottom-0"
+          style={{
+            background: "linear-gradient(to bottom, transparent, black)",
+          }}
+        ></div> */}
       </body>
     </html>
   );

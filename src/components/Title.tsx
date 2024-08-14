@@ -60,7 +60,7 @@ export default function Title({
         height: `${(0.9 * size) / 4}px`,
         transform: `scale(${isCompleted ? 0.99 : 1})`,
         filter: `brightness(${isCompleted ? 0.5 : 1})`,
-        transition: "transform 0.8s ease, filter 0.8s ease",
+        transition: "transform 0.6s ease, filter 0.6s ease",
       }}
     >
       {/* TILTING CONTAINER */}
@@ -91,7 +91,7 @@ export default function Title({
             quality={100}
             loading="lazy"
             style={{
-              transitionDuration: "1s",
+              transitionDuration: "0.6s",
             }}
           ></Image>
 

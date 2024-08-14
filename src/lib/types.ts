@@ -1,6 +1,7 @@
 export type UniverseType = {
   id: string;
   title: string;
+  banner_url: string;
   description: string;
 };
 

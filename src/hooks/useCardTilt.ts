@@ -6,7 +6,7 @@ const cardMove = (x: number, y: number, scale: number) =>
 export function useCardTilt() {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const [active, setActive] = useState(false);
+  const [active, setActive] = useState(true);
 
   useEffect(() => {
     if (cardRef.current) {

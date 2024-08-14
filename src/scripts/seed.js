@@ -8,6 +8,7 @@ async function seedUniverses(client) {
       CREATE TABLE IF NOT EXISTS universes (
         id TEXT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
+        banner_url TEXT NOT NULL,
         description TEXT NOT NULL
       );
     `;
@@ -18,11 +19,12 @@ async function seedUniverses(client) {
     const insertedUniverses = await Promise.all(
       universes.map(async (universe) => {
         return client.sql`
-        INSERT INTO universes (id, title, description)
-        VALUES (${universe.id}, ${universe.title}, ${universe.description})
+        INSERT INTO universes (id, title, banner_url, description)
+        VALUES (${universe.id}, ${universe.title}, ${universe.banner_url}, ${universe.description})
         ON CONFLICT (id) DO UPDATE SET 
           id = EXCLUDED.id,
           title = EXCLUDED.title,
+          banner_url = EXCLUDED.banner_url, 
           description = EXCLUDED.description;
       `;
       })
