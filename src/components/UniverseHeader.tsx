@@ -2,13 +2,12 @@
 
 import React, { useContext } from "react";
 import FilterList from "./FilterList";
-import { sortTitlesByRelease } from "@/utils/sortTitlesByRelease";
 import { calculateTotalDuration } from "@/utils/calculateTotalDuration";
 import { TitlesContext } from "@/services/providers/TitlesProvider";
 import TitleList from "./TitleList";
 
 export default function UniverseHeader() {
-  const { universe, titles, filteredtitles } = useContext(TitlesContext);
+  const { universe, filteredtitles } = useContext(TitlesContext);
 
   return (
     <>
@@ -40,7 +39,7 @@ export default function UniverseHeader() {
                     <FilterList />
                   </div>
 
-                  <div className=" p-4 w-full flex flex-col items-center sm:border-r border-custom-text">
+                  <div className="p-4 w-full flex flex-col items-center border-t sm:border-t-0 sm:border-r border-custom-text">
                     <h2 className="text-custom-text ">
                       Total number of titles:
                     </h2>

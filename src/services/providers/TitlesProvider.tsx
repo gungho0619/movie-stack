@@ -7,20 +7,24 @@ import React, { createContext, useEffect, useState } from "react";
 type ContextProps = {
   universe: UniverseType | null;
   titles: TitleType[];
+  filters: string[];
   filteredtitles: TitleType[];
   completed: string[];
   checkTitle: (id: string) => void;
   bannedFilters: string[];
+  switchAllFilters: (active: boolean) => void;
   checkFilter: (filter: string) => void;
 };
 
 export const TitlesContext = createContext<ContextProps>({
   universe: null,
   titles: [],
+  filters: [],
   filteredtitles: [],
   completed: [],
   checkTitle: () => {},
   bannedFilters: [],
+  switchAllFilters: () => {},
   checkFilter: () => {},
 });
 
@@ -34,6 +38,7 @@ export default function TitlesProvider({
   titles: TitleType[];
 }) {
   const [filteredTitles, setFilteredTitles] = useState<TitleType[]>([]);
+  const [filters, setFilters] = useState<string[]>([]);
   const [bannedFilters, setBannedFilters] = useState<string[]>([]);
   const [completed, setCompleted] = useState<string[]>([]);
 
@@ -44,8 +49,26 @@ export default function TitlesProvider({
   function checkTitle(id: string) {
     if (completed.includes(id)) {
       setCompleted((prev) => prev.filter((currentId) => currentId != id));
-    } else {
+    } else if (!completed.includes(id)) {
       setCompleted((prev) => [...prev, id]);
+    }
+  }
+
+  useEffect(() => {
+    const filterSet = new Set<string>();
+
+    titles.forEach((title) => {
+      const currentFilters = getTitleFilters(title);
+      currentFilters.forEach((filter) => filterSet.add(filter));
+    });
+    setFilters(Array.from(filterSet).sort());
+  }, [titles]);
+
+  function switchAllFilters(active: boolean) {
+    if (active) {
+      setBannedFilters([]);
+    } else {
+      setBannedFilters(filters);
     }
   }
 
@@ -54,7 +77,7 @@ export default function TitlesProvider({
       setBannedFilters((prev) =>
         prev.filter((currentFilter) => currentFilter !== filter)
       );
-    } else {
+    } else if (!bannedFilters.includes(filter)) {
       setBannedFilters((prev) => [...prev, filter]);
     }
   }
@@ -64,10 +87,12 @@ export default function TitlesProvider({
       value={{
         universe: universe,
         titles: titles,
+        filters,
         filteredtitles: filteredTitles,
         completed,
         checkTitle,
         bannedFilters,
+        switchAllFilters,
         checkFilter,
       }}
     >
