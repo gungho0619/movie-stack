@@ -1,11 +1,11 @@
 "use client";
 import { TitleType } from "@/lib/types";
-import { ProgressContext } from "@/services/providers/ProgressProvider";
+import { TitlesContext } from "@/services/providers/TitlesProvider";
 import { getTitleFilters } from "@/utils/getTitleFilters";
 import React, { useContext, useEffect, useState } from "react";
 
-export default function FilterList({ titles }: { titles: TitleType[] }) {
-  const { bannedFilters, checkFilter } = useContext(ProgressContext);
+export default function FilterList() {
+  const { titles, bannedFilters, checkFilter } = useContext(TitlesContext);
   const [filters, setFilters] = useState<string[]>([]);
 
   useEffect(() => {

@@ -12,7 +12,7 @@ import { getYear } from "@/utils/getYear";
 import { useScreenSize } from "@/hooks/useScreenSize";
 import { useCardTilt } from "@/hooks/useCardTilt";
 import { formatTime } from "@/utils/convertTime";
-import { ProgressContext } from "@/services/providers/ProgressProvider";
+import { TitlesContext } from "@/services/providers/TitlesProvider";
 
 const initialWidth = 320;
 const initialHeight = 80;
@@ -33,7 +33,7 @@ export default function Title({
   scale?: number;
   position: number;
 }) {
-  const { completed, checkTitle } = useContext(ProgressContext);
+  const { completed, checkTitle } = useContext(TitlesContext);
   const [isCompleted, setIsCompleted] = useState(completed.includes(data.id));
 
   const windowSize = useScreenSize();
