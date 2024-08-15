@@ -43,6 +43,21 @@ export default function TitlesProvider({
   const [filters, setFilters] = useState<string[]>([]);
   const [bannedFilters, setBannedFilters] = useState<string[]>([]);
   const [completed, setCompleted] = useState<string[]>([]);
+  const [completedLoaded, setCompletedLoaded] = useState(false);
+  const [filtersLoaded, setFiltersLoaded] = useState(false);
+
+  useEffect(() => {
+    const savedCompleted = localStorage.getItem(`completed ${universe?.id}`);
+    if (savedCompleted) {
+      setCompleted(JSON.parse(savedCompleted));
+    }
+    setCompletedLoaded(true);
+    const savedFilters = localStorage.getItem(`filters ${universe?.id}`);
+    if (savedFilters) {
+      setBannedFilters(JSON.parse(savedFilters));
+    }
+    setFiltersLoaded(true);
+  }, [universe]);
 
   useEffect(() => {
     setFilteredTitles(filterTitles(titles, bannedFilters));
@@ -57,6 +72,24 @@ export default function TitlesProvider({
     });
     setFilters(Array.from(filterSet).sort());
   }, [titles]);
+
+  useEffect(() => {
+    if (!universe || !completedLoaded) return;
+    localStorage.setItem(
+      `completed ${universe?.id}`,
+      JSON.stringify(completed)
+    );
+  }, [completed, universe, completedLoaded]);
+
+  useEffect(() => {
+    console.log("change");
+    if (!universe || !filtersLoaded) return;
+    console.log("change 1");
+    localStorage.setItem(
+      `filters ${universe?.id}`,
+      JSON.stringify(bannedFilters)
+    );
+  }, [bannedFilters, universe, filtersLoaded]);
 
   function checkTitle(id: string) {
     if (completed.includes(id)) {
