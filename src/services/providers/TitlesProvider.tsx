@@ -11,6 +11,7 @@ type ContextProps = {
   filteredtitles: TitleType[];
   completed: string[];
   checkTitle: (id: string) => void;
+  resetTitles: () => void;
   bannedFilters: string[];
   switchAllFilters: (active: boolean) => void;
   checkFilter: (filter: string) => void;
@@ -23,6 +24,7 @@ export const TitlesContext = createContext<ContextProps>({
   filteredtitles: [],
   completed: [],
   checkTitle: () => {},
+  resetTitles: () => {},
   bannedFilters: [],
   switchAllFilters: () => {},
   checkFilter: () => {},
@@ -46,14 +48,6 @@ export default function TitlesProvider({
     setFilteredTitles(filterTitles(titles, bannedFilters));
   }, [titles, bannedFilters]);
 
-  function checkTitle(id: string) {
-    if (completed.includes(id)) {
-      setCompleted((prev) => prev.filter((currentId) => currentId != id));
-    } else if (!completed.includes(id)) {
-      setCompleted((prev) => [...prev, id]);
-    }
-  }
-
   useEffect(() => {
     const filterSet = new Set<string>();
 
@@ -63,6 +57,18 @@ export default function TitlesProvider({
     });
     setFilters(Array.from(filterSet).sort());
   }, [titles]);
+
+  function checkTitle(id: string) {
+    if (completed.includes(id)) {
+      setCompleted((prev) => prev.filter((currentId) => currentId != id));
+    } else if (!completed.includes(id)) {
+      setCompleted((prev) => [...prev, id]);
+    }
+  }
+
+  function resetTitles() {
+    setCompleted([]);
+  }
 
   function switchAllFilters(active: boolean) {
     if (active) {
@@ -91,6 +97,7 @@ export default function TitlesProvider({
         filteredtitles: filteredTitles,
         completed,
         checkTitle,
+        resetTitles,
         bannedFilters,
         switchAllFilters,
         checkFilter,

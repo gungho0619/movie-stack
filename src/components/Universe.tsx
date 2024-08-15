@@ -19,7 +19,7 @@ export default function Universe({ data }: { data: UniverseType }) {
         style={{ boxShadow: "0 0 10px rgb(0 0 0 / 0.8)" }}
       >
         <Link
-          className=" text-lg sm:text-4xl w-full
+          className=" text-lg sm:text-2xl w-full
       text-center cursor-pointer font-medium"
           href={`/${data.id}`}
         >

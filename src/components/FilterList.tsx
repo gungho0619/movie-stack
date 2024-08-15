@@ -7,17 +7,17 @@ export default function FilterList() {
     useContext(TitlesContext);
 
   return (
-    <div className="text-center mb-8">
-      <div className="flex text-custom-text justify-center gap-2">
+    <div className="font-medium select-none text-center py-8 border-b border-custom-text">
+      <div className="flex text-custom-text justify-center gap-2 pb-2 mb-8 border-b border-custom-text">
         <button
-          className="select-none mb-4 hover:underline w-fit cursor-pointer"
+          className="hover:underline w-fit cursor-pointer"
           onClick={() => switchAllFilters(true)}
         >
           Show All
         </button>
         /
         <button
-          className="select-none mb-4 hover:underline w-fit cursor-pointer"
+          className="hover:underline w-fit cursor-pointer"
           onClick={() => switchAllFilters(false)}
         >
           Hide All
@@ -30,7 +30,7 @@ export default function FilterList() {
             bannedFilters.includes(filter)
               ? "scale-95 opacity-40"
               : "scale-100 opacity-100"
-          } hover:text-white font-medium hover:border-white cursor-pointer select-none
+          } hover:text-white font-medium text-[0.8rem] sm:text-[1rem] hover:border-white cursor-pointer select-none
            text-custom-text inline-block px-2 py-1 m-[0.2rem] border-[1.5px] border-custom-text`}
           style={{
             transition: "opacity 0.2s ease, transform 0.2s ease",
