@@ -14,7 +14,7 @@ export function getTitleFontSize(title: string) {
 
 export function getPositionFontSize(position: number) {
   const i = position + 1;
-  if (i >= 100) return 12;
+  if (i >= 100) return 14;
   if (i >= 10) return 18;
   return 26;
 }

@@ -15,11 +15,11 @@ export default function TitleList() {
       style={{ marginBottom: "50svh", gap: "clamp(0.5rem,5vw,2rem)" }}
     >
       <button
-        className="font-medium text-lg text-custom-text hover:underline 
+        className="font-bold text-custom-text hover:underline 
       ml-auto mr-4"
         onClick={resetTitles}
       >
-        Reset All
+        RESET ALL
       </button>
       {sortTitlesByRelease(filterTitles(titles, bannedFilters)).map(
         (title, i) => (

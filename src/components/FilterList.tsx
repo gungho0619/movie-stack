@@ -13,14 +13,14 @@ export default function FilterList() {
           className="hover:underline w-fit cursor-pointer"
           onClick={() => switchAllFilters(true)}
         >
-          Show All
+          SHOW ALL
         </button>
         /
         <button
           className="hover:underline w-fit cursor-pointer"
           onClick={() => switchAllFilters(false)}
         >
-          Hide All
+          HIDE ALL
         </button>
       </div>
 
