@@ -17,7 +17,7 @@ export default function Footer() {
           </span>
           .
         </p>
-        <Link href={"https://github.com/HarperVenom"}>
+        <Link href={"https://github.com/HarperVenom/moviestack"}>
           <GithubLogo />
         </Link>
         <p>©MovieStack</p>
