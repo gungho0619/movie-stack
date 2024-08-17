@@ -12,7 +12,7 @@ export default function TitleList() {
   return (
     <div
       className="flex flex-col"
-      style={{ marginBottom: "50svh", gap: "clamp(0.5rem,5vw,2rem)" }}
+      style={{ marginBottom: "25svh", gap: "clamp(0.5rem,5vw,2rem)" }}
     >
       <button
         className="font-bold text-custom-text hover:underline 

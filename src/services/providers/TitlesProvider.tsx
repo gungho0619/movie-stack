@@ -82,9 +82,7 @@ export default function TitlesProvider({
   }, [completed, universe, completedLoaded]);
 
   useEffect(() => {
-    console.log("change");
     if (!universe || !filtersLoaded) return;
-    console.log("change 1");
     localStorage.setItem(
       `filters ${universe?.id}`,
       JSON.stringify(bannedFilters)

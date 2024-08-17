@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import NavBar from "@/components/NavBar";
 import backPattern from "../../public/circle-blues.webp";
+import Footer from "@/components/Footer";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -28,15 +29,9 @@ export default function RootLayout({
             backgroundImage: `url(https://www.toptal.com/designers/subtlepatterns/uploads/circle-blues.png)`,
           }}
         ></div>
-        <NavBar>
-          <main className="max-w-[1000px] mx-auto">{children}</main>
-        </NavBar>
-        {/* <div
-          className="w-screen h-[10svh] fixed bottom-0"
-          style={{
-            background: "linear-gradient(to bottom, transparent, black)",
-          }}
-        ></div> */}
+        <NavBar />
+        <main className="max-w-[1000px] mx-auto">{children}</main>
+        <Footer />
       </body>
     </html>
   );

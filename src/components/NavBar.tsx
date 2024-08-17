@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useScroll } from "@/hooks/useScroll";
 import Logo from "./Logo";
 
-export default function NavBar({ children }: { children: React.ReactNode }) {
+export default function NavBar() {
   const { scroll, scrollTop } = useScroll();
   const showNav = scroll < 0 || scrollTop < 100;
 
@@ -40,8 +40,6 @@ export default function NavBar({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </div>
-
-      {children}
     </div>
   );
 }
