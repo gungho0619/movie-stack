@@ -2,9 +2,9 @@ const universes = [
   {
     id: "marvel_cinematic_universe",
     title: "Marvel Cinematic Universe",
-    banner_url: "https://i.postimg.cc/0r1rGQBY/marvel.webp",
+    banner_url: "https://i.postimg.cc/zfbW5LMR/marvel.webp",
     description:
-      "This list includes all the titles produced by Marvel Studios, such as movies, TV shows, one-shots, and specials. It also includes films that are referenced in the Marvel Cinematic Universe.",
+      "A complete collection of all Marvel titles in order, starting with Blade (1998). This list includes MCU, X-Men, Spider-Man, Fantastic Four, and more. It covers all movies, TV shows, one-shots, and specials.",
   },
 ];
 
