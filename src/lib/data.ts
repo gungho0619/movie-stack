@@ -17,7 +17,7 @@ export async function fetchUniverse(id: string): Promise<UniverseType> {
   try {
     const data = await sql<UniverseType>`SELECT * FROM universes
      WHERE id = ${id}`;
-    // revalidatePath("/");
+    revalidatePath("/");
     return data.rows[0];
   } catch (error) {
     console.error("Database Error:", error);
@@ -29,7 +29,7 @@ export async function fetchTitles(universeId: string) {
   try {
     const data =
       await sql<TitleType>`SELECT * FROM titles WHERE universe_id = ${universeId}`;
-    // revalidatePath(`/${universeId}`);
+    revalidatePath(`/${universeId}`);
     return data.rows;
   } catch (error) {
     console.error("Database Error:", error);

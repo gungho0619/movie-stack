@@ -10,10 +10,10 @@ type Props = {
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateStaticParams() {
-  const universes = await fetchUniverses();
-  return universes.map((universe) => universe.id);
-}
+// export async function generateStaticParams() {
+//   const universes = await fetchUniverses();
+//   return universes.map((universe) => universe.id);
+// }
 
 const getUniverse = cache(async (id: string) => {
   return await fetchUniverse(id);
