@@ -8,7 +8,8 @@ import TitleList from "./TitleList";
 import Image from "next/image";
 
 export default function UniverseHeader() {
-  const { universe, filteredtitles } = useContext(TitlesContext);
+  const { universe, filteredTitles: filteredtitles } =
+    useContext(TitlesContext);
 
   return (
     <>

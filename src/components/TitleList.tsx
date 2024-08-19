@@ -7,7 +7,8 @@ import { TitlesContext } from "@/services/providers/TitlesProvider";
 import { filterTitles } from "@/utils/filterTitles";
 
 export default function TitleList() {
-  const { titles, bannedFilters, resetTitles } = useContext(TitlesContext);
+  const { titles, bannedBranchFilters, bannedTypeFilters, resetTitles } =
+    useContext(TitlesContext);
 
   return (
     <div
@@ -21,11 +22,11 @@ export default function TitleList() {
       >
         RESET ALL
       </button>
-      {sortTitlesByRelease(filterTitles(titles, bannedFilters)).map(
-        (title, i) => (
-          <Title key={title.id} data={title} position={i}></Title>
-        )
-      )}
+      {sortTitlesByRelease(
+        filterTitles(titles, bannedBranchFilters, bannedTypeFilters)
+      ).map((title, i) => (
+        <Title key={title.id} data={title} position={i}></Title>
+      ))}
     </div>
   );
 }

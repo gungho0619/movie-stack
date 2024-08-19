@@ -50,10 +50,10 @@ async function seedTitles(client) {
         universe_id TEXT NOT NULL,
         title VARCHAR(255) NOT NULL,
         branch TEXT NOT NULL,
+        type TEXT NOT NULL,
         banner_url TEXT NOT NULL,
         release_date DATE NOT NULL,
-        duration INT NOT NULL,
-        text TEXT NOT NULL
+        duration INT NOT NULL
       );
     `;
 
@@ -63,17 +63,17 @@ async function seedTitles(client) {
     const insertedTitles = await Promise.all(
       titles.map(async (title) => {
         return client.sql`
-        INSERT INTO titles (id, universe_id, title, branch, banner_url, release_date, duration, text)
-        VALUES (${title.id}, ${title.universe_id}, ${title.title}, ${title.branch},
-        ${title.banner_url}, ${title.release_date}, ${title.duration}, ${title.text})
+        INSERT INTO titles (id, universe_id, title, branch, type, banner_url, release_date, duration)
+        VALUES (${title.id}, ${title.universe_id}, ${title.title}, ${title.branch}, ${title.type},
+        ${title.banner_url}, ${title.release_date}, ${title.duration})
         ON CONFLICT (id) DO UPDATE SET 
           universe_id = EXCLUDED.universe_id,
           title = EXCLUDED.title,
           branch = EXCLUDED.branch,
+          type = EXCLUDED.type,
           banner_url = EXCLUDED.banner_url,
           release_date = EXCLUDED.release_date,
-          duration = EXCLUDED.duration,
-          text = EXCLUDED.text;
+          duration = EXCLUDED.duration;
       `;
       })
     );

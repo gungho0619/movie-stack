@@ -71,11 +71,10 @@ export default function Title({
       >
         {/* SCALED CARD */}
         <div
-          className="left-1/2 top-1/2 overflow-hidden absolute shadow-2xl flex items-center font-bold"
+          className="text-white left-1/2 top-1/2 overflow-hidden absolute shadow-2xl flex items-center font-bold"
           style={{
             width: `${initialWidth}px`,
             height: `${initialHeight}px`,
-            color: data.text,
             transform: `translate(-50%, -50%) scale(${scale})`,
           }}
         >
@@ -113,11 +112,7 @@ export default function Title({
             style={{
               width: `${leftBlindZoneWidth}px`,
               height: `${initialHeight}px`,
-              background: `linear-gradient(to right, hsl(0, 0%, ${
-                data.text === "white" ? 0 : 100
-              }%, 0.7),hsl(0, 0%, ${
-                data.text === "white" ? 0 : 100
-              }%, 0.15) 90%, transparent)`,
+              background: `linear-gradient(to right, hsl(0, 0%, 0%, 0.7),hsl(0, 0%, 0%, 0.15) 90%, transparent)`,
             }}
           ></div>
 
@@ -127,11 +122,7 @@ export default function Title({
             style={{
               width: `${rightBlindZoneWidth}px`,
               height: `${initialHeight}px`,
-              background: `linear-gradient(to left, hsl(0, 0%, ${
-                data.text === "white" ? 0 : 100
-              }%, 0.7),hsl(0, 0%, ${
-                data.text === "white" ? 0 : 100
-              }%, 0.1) 80%, transparent)`,
+              background: `linear-gradient(to left, hsl(0, 0%, 0%, 0.7),hsl(0, 0%, 0%, 0.1) 80%, transparent)`,
             }}
           ></div>
 
@@ -162,8 +153,8 @@ export default function Title({
               {data.title}
             </div>
             <div
-              className="text-[9px] text-zinc-300"
-              style={{ color: data.text, opacity: "0.8" }}
+              className="text-[9px] text-zinc-100"
+              style={{ opacity: "0.8" }}
             >
               {`${getYear(data.release_date)} • ${formatTime(data.duration)}`}
             </div>
@@ -180,7 +171,6 @@ export default function Title({
               style={{
                 width: `${squareWidth}px`,
                 height: `${squareWidth}px`,
-                borderColor: data.text,
               }}
               onClick={() => checkTitle(data.id)}
             >
@@ -197,7 +187,7 @@ export default function Title({
                     height: `${squareWidth}px`,
                   }}
                 >
-                  <Checkmark fill={data.text} />
+                  <Checkmark fill="white" />
                 </div>
               </div>
             </button>

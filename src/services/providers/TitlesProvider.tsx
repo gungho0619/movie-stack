@@ -7,25 +7,29 @@ import React, { createContext, useEffect, useState } from "react";
 type ContextProps = {
   universe: UniverseType | null;
   titles: TitleType[];
-  filters: string[];
-  filteredtitles: TitleType[];
+  branchFilters: string[];
+  typeFilters: string[];
+  filteredTitles: TitleType[];
   completed: string[];
   checkTitle: (id: string) => void;
   resetTitles: () => void;
-  bannedFilters: string[];
+  bannedBranchFilters: string[];
+  bannedTypeFilters: string[];
   switchAllFilters: (active: boolean) => void;
-  checkFilter: (filter: string) => void;
+  checkFilter: (filter: string, kind: "branch" | "type") => void;
 };
 
 export const TitlesContext = createContext<ContextProps>({
   universe: null,
   titles: [],
-  filters: [],
-  filteredtitles: [],
+  branchFilters: [],
+  typeFilters: [],
+  filteredTitles: [],
   completed: [],
   checkTitle: () => {},
   resetTitles: () => {},
-  bannedFilters: [],
+  bannedBranchFilters: [],
+  bannedTypeFilters: [],
   switchAllFilters: () => {},
   checkFilter: () => {},
 });
@@ -40,8 +44,13 @@ export default function TitlesProvider({
   titles: TitleType[];
 }) {
   const [filteredTitles, setFilteredTitles] = useState<TitleType[]>([]);
-  const [filters, setFilters] = useState<string[]>([]);
-  const [bannedFilters, setBannedFilters] = useState<string[]>([]);
+
+  const [branchFilters, setBranchFilters] = useState<string[]>([]);
+  const [typeFilters, setTypeFilters] = useState<string[]>([]);
+
+  const [bannedBranchFilters, setBannedBranchFilters] = useState<string[]>([]);
+  const [bannedTypeFilters, setBannedTypeFilters] = useState<string[]>([]);
+
   const [completed, setCompleted] = useState<string[]>([]);
   const [completedLoaded, setCompletedLoaded] = useState(false);
   const [filtersLoaded, setFiltersLoaded] = useState(false);
@@ -52,25 +61,43 @@ export default function TitlesProvider({
       setCompleted(JSON.parse(savedCompleted));
     }
     setCompletedLoaded(true);
-    const savedFilters = localStorage.getItem(`filters ${universe?.id}`);
-    if (savedFilters) {
-      setBannedFilters(JSON.parse(savedFilters));
+
+    const savedBranchFilters = localStorage.getItem(
+      `branchFilters ${universe?.id}`
+    );
+    if (savedBranchFilters) {
+      setBannedBranchFilters(JSON.parse(savedBranchFilters));
     }
+
+    const savedTypeFilters = localStorage.getItem(
+      `typeFilters ${universe?.id}`
+    );
+    if (savedTypeFilters) {
+      setBannedTypeFilters(JSON.parse(savedTypeFilters));
+    }
+
     setFiltersLoaded(true);
   }, [universe]);
 
   useEffect(() => {
-    setFilteredTitles(filterTitles(titles, bannedFilters));
-  }, [titles, bannedFilters]);
+    setFilteredTitles(
+      filterTitles(titles, bannedBranchFilters, bannedTypeFilters)
+    );
+  }, [titles, bannedBranchFilters, bannedTypeFilters]);
 
   useEffect(() => {
-    const filterSet = new Set<string>();
-
+    const branchFilterSet = new Set<string>();
     titles.forEach((title) => {
       const currentFilters = getTitleFilters(title);
-      currentFilters.forEach((filter) => filterSet.add(filter));
+      currentFilters.forEach((filter) => branchFilterSet.add(filter));
     });
-    setFilters(Array.from(filterSet).sort());
+    setBranchFilters(Array.from(branchFilterSet).sort());
+
+    const typeFilterSet = new Set<string>();
+    titles.forEach((title) => {
+      typeFilterSet.add(title.type);
+    });
+    setTypeFilters(Array.from(typeFilterSet).sort());
   }, [titles]);
 
   useEffect(() => {
@@ -84,10 +111,18 @@ export default function TitlesProvider({
   useEffect(() => {
     if (!universe || !filtersLoaded) return;
     localStorage.setItem(
-      `filters ${universe?.id}`,
-      JSON.stringify(bannedFilters)
+      `branchFilters ${universe?.id}`,
+      JSON.stringify(bannedBranchFilters)
     );
-  }, [bannedFilters, universe, filtersLoaded]);
+  }, [bannedBranchFilters, universe, filtersLoaded]);
+
+  useEffect(() => {
+    if (!universe || !filtersLoaded) return;
+    localStorage.setItem(
+      `typeFilters ${universe?.id}`,
+      JSON.stringify(bannedTypeFilters)
+    );
+  }, [bannedTypeFilters, universe, filtersLoaded]);
 
   function checkTitle(id: string) {
     if (completed.includes(id)) {
@@ -103,33 +138,45 @@ export default function TitlesProvider({
 
   function switchAllFilters(active: boolean) {
     if (active) {
-      setBannedFilters([]);
+      setBannedBranchFilters([]);
     } else {
-      setBannedFilters(filters);
+      setBannedBranchFilters(branchFilters);
     }
   }
 
-  function checkFilter(filter: string) {
-    if (bannedFilters.includes(filter)) {
-      setBannedFilters((prev) =>
-        prev.filter((currentFilter) => currentFilter !== filter)
-      );
-    } else if (!bannedFilters.includes(filter)) {
-      setBannedFilters((prev) => [...prev, filter]);
+  function checkFilter(filter: string, kind: "branch" | "type") {
+    if (kind === "branch") {
+      if (bannedBranchFilters.includes(filter)) {
+        setBannedBranchFilters((prev) =>
+          prev.filter((currentFilter) => currentFilter !== filter)
+        );
+      } else if (!bannedBranchFilters.includes(filter)) {
+        setBannedBranchFilters((prev) => [...prev, filter]);
+      }
+    } else {
+      if (bannedTypeFilters.includes(filter)) {
+        setBannedTypeFilters((prev) =>
+          prev.filter((currentFilter) => currentFilter !== filter)
+        );
+      } else if (!bannedTypeFilters.includes(filter)) {
+        setBannedTypeFilters((prev) => [...prev, filter]);
+      }
     }
   }
 
   return (
     <TitlesContext.Provider
       value={{
-        universe: universe,
-        titles: titles,
-        filters,
-        filteredtitles: filteredTitles,
+        universe,
+        titles,
+        branchFilters,
+        typeFilters,
+        filteredTitles,
         completed,
         checkTitle,
         resetTitles,
-        bannedFilters,
+        bannedBranchFilters,
+        bannedTypeFilters,
         switchAllFilters,
         checkFilter,
       }}

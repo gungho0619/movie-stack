@@ -10,10 +10,10 @@ export type TitleType = {
   id: string;
   title: string;
   branch: string;
+  type: string;
   banner_url: string;
   duration: number;
   release_date: string;
-  text: "white" | "black";
 };
 
 export type TitleConnectionType = {
